@@ -1,6 +1,6 @@
-# STRM WebDAV Server
+# Debrid Infuse Bridge
 
-A Node.js service that periodically fetches your Real-Debrid downloads, generates `.strm` files, and serves them via WebDAV.
+A WebDAV bridge for Infuse that fetches your Real-Debrid downloads, generates `.strm` files, and serves them for seamless streaming in Infuse while files remain hosted on Real-Debrid.
 
 ## Features
 
@@ -135,7 +135,7 @@ docker-compose up -d --build
 ## Project Structure
 
 ```
-strm-webdav-server/
+debrid-infuse-bridge/
 ├── src/
 │   ├── index.js           # Main server & orchestration
 │   ├── api-poller.js      # API fetching logic

@@ -1,7 +1,7 @@
 version: '3'
 
 vars:
-  PROJECT_NAME: strm-webdav-server
+  PROJECT_NAME: debrid-infuse-bridge
   COMPOSE_FILE: docker-compose.yml
 
 tasks:

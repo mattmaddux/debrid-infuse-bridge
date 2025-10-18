@@ -1,16 +1,16 @@
-# STRM WebDAV Server - Warp AI Rules
+# Debrid Infuse Bridge - Warp AI Rules
 
 ## Project Overview
-Simple Node.js service that:
+WebDAV bridge for Infuse media player that:
 1. Fetches Real-Debrid downloads at configurable intervals
 2. Creates `.strm` files (one URL per file) using original filenames
-3. Serves those files via WebDAV (no authentication)
+3. Serves those files via WebDAV for Infuse to consume (no authentication)
 
 **Tech Stack:** Node.js, webdav-server, axios, Docker
 
 ## Project Structure
 ```
-strm-webdav-server/
+debrid-infuse-bridge/
 ├── src/
 │   ├── index.js           # Main server, WebDAV setup, orchestration
 │   ├── api-poller.js      # API fetching logic, interval management

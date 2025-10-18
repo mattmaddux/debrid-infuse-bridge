@@ -1,7 +1,7 @@
 {
-  "name": "strm-webdav-server",
+  "name": "debrid-infuse-bridge",
   "version": "1.0.0",
-  "description": "WebDAV server that generates .strm files from API URLs",
+  "description": "WebDAV bridge for Infuse to stream Real-Debrid files via .strm files",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
