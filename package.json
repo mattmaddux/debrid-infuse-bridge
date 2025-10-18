@@ -7,13 +7,18 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js"
   },
-  "keywords": ["webdav", "strm", "streaming"],
+  "keywords": [
+    "webdav",
+    "strm",
+    "streaming"
+  ],
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "webdav-server": "^2.6.2",
     "axios": "^1.6.2",
-    "dotenv": "^16.3.1"
+    "cheerio": "^1.1.2",
+    "dotenv": "^16.3.1",
+    "webdav-server": "^2.6.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"

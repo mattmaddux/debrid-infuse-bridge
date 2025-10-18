@@ -6,15 +6,17 @@ const ApiPoller = require('./api-poller');
 
 // Configuration from environment variables
 const config = {
-  apiKey: process.env.API_KEY,
+  userId: process.env.USER_ID,
   pollInterval: parseInt(process.env.POLL_INTERVAL_MS) || 300000, // Default 5 minutes
   webdavPort: parseInt(process.env.WEBDAV_PORT) || 1900,
   strmDir: path.resolve(process.env.STRM_DIR || './strm-files')
 };
 
 // Validate required environment variables
-if (!config.apiKey) {
-  console.error('ERROR: API_KEY environment variable is required');
+if (!config.userId) {
+  console.error('ERROR: USER_ID environment variable is required');
+  console.error('This is the ID from your Real-Debrid HTTP index URL:');
+  console.error('  https://my.real-debrid.com/{USER_ID}/torrents/');
   process.exit(1);
 }
 
@@ -23,12 +25,12 @@ console.log('Configuration:');
 console.log(`  WebDAV Port: ${config.webdavPort}`);
 console.log(`  Poll Interval: ${config.pollInterval}ms`);
 console.log(`  STRM Directory: ${config.strmDir}`);
-console.log(`  API Key: ${config.apiKey.substring(0, 8)}...`);
+console.log(`  User ID: ${config.userId}`);
 console.log('');
 
 // Initialize components
 const fileManager = new FileManager(config.strmDir);
-const apiPoller = new ApiPoller(config.apiKey, fileManager, config.pollInterval);
+const apiPoller = new ApiPoller(config.userId, fileManager, config.pollInterval, config.strmDir);
 
 // Create WebDAV server
 const userManager = new webdav.SimpleUserManager();

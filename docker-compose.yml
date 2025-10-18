@@ -6,7 +6,7 @@ services:
     ports:
       - "${WEBDAV_PORT:-1900}:1900"
     environment:
-      - API_KEY=${API_KEY}
+      - USER_ID=${USER_ID}
       - POLL_INTERVAL_MS=${POLL_INTERVAL_MS:-300000}
       - WEBDAV_PORT=1900
       - STRM_DIR=/app/strm-files
