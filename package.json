@@ -1,0 +1,21 @@
+{
+  "name": "strm-webdav-server",
+  "version": "1.0.0",
+  "description": "WebDAV server that generates .strm files from API URLs",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "keywords": ["webdav", "strm", "streaming"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "webdav-server": "^2.6.2",
+    "axios": "^1.6.2",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}

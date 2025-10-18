@@ -1,0 +1,121 @@
+version: '3'
+
+vars:
+  PROJECT_NAME: strm-webdav-server
+  COMPOSE_FILE: docker-compose.yml
+
+tasks:
+  # Build the Docker image
+  build:
+    desc: Build the Docker image
+    cmds:
+      - docker compose build
+
+  # Start the service
+  up:
+    desc: Start the service in detached mode
+    cmds:
+      - docker compose up -d
+
+  # Start with rebuild
+  restart:
+    desc: Rebuild and restart the service
+    cmds:
+      - docker compose up -d --build
+
+  # Stop the service
+  down:
+    desc: Stop and remove containers
+    cmds:
+      - docker compose down
+
+  # View logs
+  logs:
+    desc: View service logs (follow mode)
+    cmds:
+      - docker compose logs -f
+
+  # View recent logs
+  logs-tail:
+    desc: View last 100 lines of logs
+    cmds:
+      - docker compose logs --tail=100
+
+  # Check service status
+  status:
+    desc: Show service status
+    cmds:
+      - docker compose ps
+
+  # Shell into container
+  shell:
+    desc: Open a shell in the running container
+    cmds:
+      - docker compose exec strm-webdav sh
+
+  # Clean up everything
+  clean:
+    desc: Stop and remove containers, volumes, and images
+    cmds:
+      - docker compose down -v
+      - docker rmi {{.PROJECT_NAME}}_strm-webdav 2>/dev/null || true
+
+  # View generated .strm files
+  list-files:
+    desc: List generated .strm files
+    cmds:
+      - ls -lh strm-files/
+
+  # Check WebDAV accessibility
+  test-webdav:
+    desc: Test WebDAV endpoint availability
+    cmds:
+      - curl -I http://localhost:${WEBDAV_PORT:-1900}/webdav/
+
+  # Show environment configuration
+  config:
+    desc: Display current configuration from .env
+    cmds:
+      - |
+        echo "Current Configuration:"
+        echo "====================="
+        if [ -f .env ]; then
+          grep -v '^#' .env | grep -v '^$'
+        else
+          echo "No .env file found. Copy .env.example to .env"
+        fi
+
+  # Setup: copy .env.example if .env doesn't exist
+  setup:
+    desc: Initial setup - create .env from example
+    cmds:
+      - |
+        if [ ! -f .env ]; then
+          cp .env.example .env
+          echo "Created .env file. Please edit it with your API_KEY."
+        else
+          echo ".env already exists"
+        fi
+
+  # Full workflow: setup, build, and start
+  init:
+    desc: Complete initialization (setup + build + start)
+    cmds:
+      - task: setup
+      - task: build
+      - task: up
+      - echo "Service started! Access WebDAV at http://localhost:1900/webdav/"
+
+  # Development: start in background
+  dev:
+    desc: Start service in background (detached)
+    cmds:
+      - task: up
+      - echo "Service started in background. Use 'task logs' to view output."
+
+  # Development: start and watch logs in foreground
+  foreground:
+    desc: Start service and watch logs in foreground
+    cmds:
+      - task: up
+      - task: logs
