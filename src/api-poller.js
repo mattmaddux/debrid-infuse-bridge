@@ -115,7 +115,8 @@ class ApiPoller {
           for (const filename of cachedFiles) {
             allFiles.push({
               url: folderUrl + filename,
-              filename: filename
+              filename: filename,
+              folder: folder.name  // Add folder name
             });
           }
           continue;
@@ -133,7 +134,8 @@ class ApiPoller {
               fileNames.push(file.name);
               allFiles.push({
                 url: folderUrl + file.name,
-                filename: file.name
+                filename: file.name,
+                folder: folder.name  // Add folder name
               });
             }
           }
