@@ -5,10 +5,12 @@ services:
     restart: unless-stopped
     ports:
       - "${WEBDAV_PORT:-1900}:1900"
+      - "${BROWSE_PORT:-1901}:1901"
     environment:
       - USER_ID=${USER_ID}
       - POLL_INTERVAL_MS=${POLL_INTERVAL_MS:-300000}
       - WEBDAV_PORT=1900
+      - BROWSE_PORT=1901
       - STRM_DIR=/app/strm-files
     volumes:
       # Persist .strm files outside container

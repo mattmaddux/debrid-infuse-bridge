@@ -7,6 +7,7 @@ A WebDAV bridge for Infuse that fetches your Real-Debrid downloads, generates `.
 - 🔄 Fetches all Real-Debrid downloads (up to 5000)
 - 📁 Automatic `.strm` file generation with original filenames
 - 🌐 WebDAV server with no authentication required
+- 🖥️ Web browser interface for easy file browsing
 - 🐳 Docker & Docker Compose ready
 - ♻️ Auto-sync: creates new files and removes old ones
 - ⚡ Configurable polling interval
@@ -32,6 +33,7 @@ Edit `.env` and set your Real-Debrid API key:
 API_KEY=your-real-debrid-api-key
 POLL_INTERVAL_MS=300000    # 5 minutes
 WEBDAV_PORT=1900
+BROWSE_PORT=1901
 ```
 
 **Getting your Real-Debrid API key:**
@@ -49,8 +51,15 @@ The server will:
 - Build the Docker image
 - Start polling the API immediately
 - Serve files via WebDAV at `http://localhost:1900/webdav/`
+- Provide a web browser interface at `http://localhost:1901/browse/`
 
-### 4. Access WebDAV
+### 3. Access Your Files
+
+**Via Web Browser** (easiest for viewing):
+- Open `http://localhost:1901/browse/` in any web browser
+- Browse directories and click files to view their contents
+
+**Via WebDAV** (for Infuse):
 
 Mount the WebDAV share:
 - **macOS Finder**: `Cmd+K` → `http://localhost:1900/webdav/`
@@ -64,6 +73,7 @@ Mount the WebDAV share:
 | `API_KEY` | (required) | API authentication key |
 | `POLL_INTERVAL_MS` | 300000 | Polling interval in milliseconds (5 min default) |
 | `WEBDAV_PORT` | 1900 | WebDAV server port |
+| `BROWSE_PORT` | 1901 | Web browse interface port |
 | `STRM_DIR` | ./strm-files | Directory for generated .strm files |
 
 ## How It Works
@@ -74,7 +84,9 @@ Mount the WebDAV share:
    - Creates a `.strm` file (e.g., `Star Trek Voyager s04e01.strm`)
    - Contents: the direct download URL
 3. **Sync**: Removes `.strm` files for downloads no longer available
-4. **WebDAV**: Serves the `strm-files/` directory via WebDAV
+4. **Dual Access**:
+   - **WebDAV** (port 1900): Serves files for Infuse and file managers
+   - **HTTP Browse** (port 1901): Simple web interface for browsing files in your browser
 
 ## Local Development
 

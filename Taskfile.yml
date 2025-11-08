@@ -72,6 +72,12 @@ tasks:
     cmds:
       - curl -I http://localhost:${WEBDAV_PORT:-1900}/webdav/
 
+  # Check browse interface
+  test-browse:
+    desc: Test browse interface availability
+    cmds:
+      - curl -I http://localhost:${BROWSE_PORT:-1901}/browse/
+
   # Show environment configuration
   config:
     desc: Display current configuration from .env
@@ -104,7 +110,10 @@ tasks:
       - task: setup
       - task: build
       - task: up
-      - echo "Service started! Access WebDAV at http://localhost:1900/webdav/"
+      - |
+        echo "Service started!"
+        echo "  WebDAV: http://localhost:1900/webdav/"
+        echo "  Browse: http://localhost:1901/browse/"
 
   # Development: start in background
   dev:
