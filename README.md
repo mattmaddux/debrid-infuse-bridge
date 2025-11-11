@@ -19,6 +19,45 @@ A WebDAV bridge for Infuse that fetches your Real-Debrid downloads, generates `.
 
 ## Quick Start
 
+### Option A: Using Docker Hub (Recommended)
+
+Pull the pre-built image from Docker Hub:
+
+```bash
+# Create .env file
+cat > .env << EOF
+USER_ID=your-real-debrid-user-id
+POLL_INTERVAL_MS=300000
+WEBDAV_PORT=1900
+BROWSE_PORT=1901
+EOF
+
+# Create docker-compose.yml
+cat > docker-compose.yml << 'EOF'
+services:
+  strm-webdav:
+    image: mattmaddux/debrid-infuse-bridge:latest
+    container_name: strm-webdav-server
+    restart: unless-stopped
+    ports:
+      - "${WEBDAV_PORT:-1900}:1900"
+      - "${BROWSE_PORT:-1901}:1901"
+    environment:
+      - USER_ID=${USER_ID}
+      - POLL_INTERVAL_MS=${POLL_INTERVAL_MS:-300000}
+      - WEBDAV_PORT=1900
+      - BROWSE_PORT=1901
+      - STRM_DIR=/app/strm-files
+    volumes:
+      - ./strm-files:/app/strm-files
+EOF
+
+# Start the service
+docker-compose up -d
+```
+
+### Option B: Build from Source
+
 ### 1. Configure Environment
 
 Copy the example environment file and edit it:
@@ -27,19 +66,19 @@ Copy the example environment file and edit it:
 cp .env.example .env
 ```
 
-Edit `.env` and set your Real-Debrid API key:
+Edit `.env` and set your Real-Debrid user ID:
 
 ```env
-API_KEY=your-real-debrid-api-key
+USER_ID=your-real-debrid-user-id
 POLL_INTERVAL_MS=300000    # 5 minutes
 WEBDAV_PORT=1900
 BROWSE_PORT=1901
 ```
 
-**Getting your Real-Debrid API key:**
-1. Go to https://real-debrid.com/apitoken
-2. Copy your API token
-3. Paste it as the `API_KEY` value
+**Getting your Real-Debrid user ID:**
+1. Go to https://my.real-debrid.com/
+2. Find your user ID in the URL: `https://my.real-debrid.com/{USER_ID}/torrents/`
+3. Paste it as the `USER_ID` value
 
 ### 2. Run with Docker Compose
 
@@ -127,6 +166,21 @@ docker-compose down
 
 # Rebuild after code changes
 docker-compose up -d --build
+```
+
+### Building and Pushing to Docker Hub
+
+```bash
+# Build for multiple platforms
+docker buildx build --platform linux/amd64,linux/arm64 \
+  -t mattmaddux/debrid-infuse-bridge:latest \
+  -t mattmaddux/debrid-infuse-bridge:v1.0.0 \
+  --push .
+
+# Or build and push with docker compose
+docker compose build
+docker tag debrid-infuse-bridge-strm-webdav:latest mattmaddux/debrid-infuse-bridge:latest
+docker push mattmaddux/debrid-infuse-bridge:latest
 ```
 
 ## Troubleshooting
